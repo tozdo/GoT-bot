@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+import random
 from random import uniform
 import conf
 import telebot
@@ -12,6 +13,9 @@ WEBHOOK_URL_PATH = "/{}/".format(conf.TOKEN)
 bot.remove_webhook()
 bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH)
 app = flask.Flask(__name__)
+home_dir = '/home/marole/mysite/'
+books = ['Игра Престолов.txt', 'Битва Королей часть 1.txt', 'Битва Королей часть 2.txt', 'Буря Мечей часть 1.txt', /
+         'Буря Мечей часть 2.txt', 'Пир Стервятников.txt', 'Танец с Драконами часть 1.txt', 'Танец с драконами часть 2.txt']
 
 def gen_lines(corpus):
     data = open(corpus)
@@ -82,7 +86,9 @@ def send_welcome(message):
 
 @bot.message_handler(func=lambda m: True)
 def send_phrase(message):
-    model = train('1.txt')
+    book = random.choice(books)
+    corpus = home_dir + book
+    model = train(corpus)
     phrase = generate_sentence(model)
     bot.send_message(message.chat.id, phrase)
 
