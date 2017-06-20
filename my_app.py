@@ -14,8 +14,8 @@ bot.remove_webhook()
 bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH)
 app = flask.Flask(__name__)
 home_dir = '/home/marole/mysite/'
-books = ['Игра Престолов.txt', 'Битва Королей часть 1.txt', 'Битва Королей часть 2.txt', 'Буря Мечей часть 1.txt', /
-         'Буря Мечей часть 2.txt', 'Пир Стервятников.txt', 'Танец с Драконами часть 1.txt', 'Танец с драконами часть 2.txt']
+books = ['Игра Престолов', 'Битва Королей часть 1', 'Битва Королей часть 2', 'Буря Мечей часть 1', /
+         'Буря Мечей часть 2', 'Пир Стервятников', 'Танец с Драконами часть 1', 'Танец с драконами часть 2']
 
 def gen_lines(corpus):
     data = open(corpus)
@@ -80,21 +80,17 @@ def unirand(seq):
         if rnd < freq_:
             return token
 
-@bot.message_handler(commands='start')
+@bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, 'Здравствуйте! Сейчас я буду с Вами разговаривать.')
-
-@bot.message_handler(commands='help')
-def send_help(message):
-    bot.send_message(message.chat.id, 'Это бот, который на любое Ваше сообщение ответит фразой из "Песни Льда и Огня".')
+    bot.send_message(message.chat.id, 'Здравствуйте! Сейчас я буду с Вами разговаривать. Это бот, который на любое Ваше сообщение ответит фразой из "Песни Льда и Огня".')
 
 @bot.message_handler(func=lambda m: True)
 def send_phrase(message):
     book = random.choice(books)
-    corpus = home_dir + book
+    corpus = home_dir + book + '.txt'
     model = train(corpus)
     phrase = generate_sentence(model)
-    bot.send_message(message.chat.id, phrase)
+    bot.send_message(message.chat.id, phrase + ' (' + book + ')')
 
 @app.route('/', methods=['GET', 'HEAD'])
 def index():
