@@ -80,9 +80,13 @@ def unirand(seq):
         if rnd < freq_:
             return token
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, 'Здравствуйте! Сейчас я буду с Вами разговаривать. Это бот, который на любое Ваше сообщение ответит фразой из "Песни Льда и Огня".')
+    bot.send_message(message.chat.id, 'Здравствуйте! Сейчас я буду с Вами разговаривать. ')
+
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    bot.send_message(message.chat.id, 'Это бот, который на любое Ваше сообщение ответит фразой из "Песни Льда и Огня".')
 
 @bot.message_handler(func=lambda m: True)
 def send_phrase(message):
