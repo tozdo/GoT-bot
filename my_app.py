@@ -85,7 +85,7 @@ def send_welcome(message):
     bot.send_message(message.chat.id, 'Здравствуйте! Сейчас я буду с Вами разговаривать.')
 
 @bot.message_handler(commands='help')
-def send_welcome(message):
+def send_help(message):
     bot.send_message(message.chat.id, 'Это бот, который на любое Ваше сообщение ответит фразой из "Песни Льда и Огня".')
 
 @bot.message_handler(func=lambda m: True)
