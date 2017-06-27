@@ -69,6 +69,7 @@ def generate_sentence(model, someword):
                 phrase += t1
             else:
                 phrase += ' ' + t1
+        phrase = someword + phrase
     except:
         t0, t1 = '$', '$'
         while 1:
