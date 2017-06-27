@@ -106,7 +106,7 @@ def send_phrase(message):
     corpus = home_dir + book + '.txt'
     model = train(corpus)
     phrase = generate_sentence(model, someword)
-    bot.send_message(message.chat.id, phrase + ' (' + book + ')')
+    bot.send_message(message.chat.id, phrase)
 
 @app.route('/', methods=['GET', 'HEAD'])
 def index():
