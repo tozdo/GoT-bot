@@ -58,16 +58,26 @@ def train(corpus):
             model[t0, t1] = [(t2, freq/bi[t0, t1])]
     return model
 
-def generate_sentence(model):
+def generate_sentence(model, someword):
     phrase = ''
-    t0, t1 = '$', '$'
-    while 1:
-        t0, t1 = t1, unirand(model[t0, t1]) #unirand
-        if t1 == '$': break
-        if t1 in ('.!?,;:') or t0 == '$':
-            phrase += t1
-        else:
-            phrase += ' ' + t1
+    try:
+        t0, t1 = '$', someword
+        while 1:
+            t0, t1 = t1, unirand(model[t0, t1])
+            if t1 == '$': break
+            if t1 in ('.!?,;:') or t0 == '$':
+                phrase += t1
+            else:
+                phrase += ' ' + t1
+    except:
+        t0, t1 = '$', '$'
+        while 1:
+            t0, t1 = t1, unirand(model[t0, t1]) #unirand
+            if t1 == '$': break
+            if t1 in ('.!?,;:') or t0 == '$':
+                phrase += t1
+            else:
+                phrase += ' ' + t1
     return phrase.capitalize()
 
 def unirand(seq):
@@ -90,10 +100,12 @@ def send_help(message):
 
 @bot.message_handler(func=lambda m: True)
 def send_phrase(message):
+    words = re.findall('[а-я]+', message.text.lower())
+    someword = random.choice(words)
     book = random.choice(books)
     corpus = home_dir + book + '.txt'
     model = train(corpus)
-    phrase = generate_sentence(model)
+    phrase = generate_sentence(model, someword)
     bot.send_message(message.chat.id, phrase + ' (' + book + ')')
 
 @app.route('/', methods=['GET', 'HEAD'])
